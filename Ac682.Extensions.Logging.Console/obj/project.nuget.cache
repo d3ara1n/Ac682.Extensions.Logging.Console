@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "Vq/hyzau0SiD4MCpSQH+E4Sh9Wl0cqM/UNn2UJkRLs4PvyTkt8BzvCixQsZDJfe0b8fmf+AI372tdE0Js4uGvA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\zqy02\\Projects\\Ac682.Extensions.Logging.Console\\Ac682.Extensions.Logging.Console\\Ac682.Extensions.Logging.Console.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\zqy02\\.nuget\\packages\\gitversion.msbuild\\5.6.10\\gitversion.msbuild.5.6.10.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.0\\microsoft.extensions.dependencyinjection.5.0.0.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.logging\\5.0.0\\microsoft.extensions.logging.5.0.0.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
+    "C:\\Users\\zqy02\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
