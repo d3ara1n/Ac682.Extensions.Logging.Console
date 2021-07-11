@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using SConsole = System.Console;
 using Microsoft.Extensions.Logging;
 
@@ -41,20 +43,29 @@ namespace Ac682.Extensions.Logging.Console
                     LogLevel.Critical => "CRIT",
                     _ => "NONE"
                 };
-                // 20/07/22 00:11 DEBG NAME => STHSTH
-                SConsole.ResetColor();
+                
                 var datetime = DateTime.Now.ToString("yy/MM/dd HH:mm:ss ");
-                SConsole.ForegroundColor = ConsoleColor.Blue;
-                SConsole.Write(datetime);
+                
                 var color = GetColor(logLevel);
                 if (color.Item1 != ConsoleColor.Black) SConsole.BackgroundColor = color.Item1;
-                SConsole.ForegroundColor = color.Item2;
-                SConsole.Write($"{levelName}");
-                SConsole.ResetColor();
-                SConsole.ForegroundColor = ConsoleColor.DarkCyan;
-                SConsole.Write($" {(_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name)} ");
-                SConsole.ForegroundColor = ConsoleColor.White;
-                SConsole.WriteLine(formatter(state, exception));
+                var category = (_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name);
+                // 20/07/22 00:11 DEBG NAME => STHSTH
+                // SConsole.ResetColor();
+                // SConsole.ForegroundColor = ConsoleColor.Blue;
+                // SConsole.Write(datetime);
+                // SConsole.ForegroundColor = color.Item2;
+                // SConsole.Write($"{levelName}");
+                // SConsole.ResetColor();
+                // SConsole.ForegroundColor = ConsoleColor.DarkCyan;
+                // SConsole.Write($" {category} ");
+                // SConsole.ForegroundColor = ConsoleColor.White;
+                // SConsole.WriteLine(formatter(state, exception));
+
+                List<object> properties = new List<object>();
+                if (state is IEnumerable<KeyValuePair<string, object>>)
+                {
+                    //TODO: 明天接着干
+                }
             }
         }
 

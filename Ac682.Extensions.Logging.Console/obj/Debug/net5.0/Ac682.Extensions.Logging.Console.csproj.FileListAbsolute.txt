@@ -1,0 +1,14 @@
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\bin\Debug\net5.0\Ac682.Extensions.Logging.Console.deps.json
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\bin\Debug\net5.0\Ac682.Extensions.Logging.Console.dll
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\bin\Debug\net5.0\ref\Ac682.Extensions.Logging.Console.dll
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\bin\Debug\net5.0\Ac682.Extensions.Logging.Console.pdb
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.csprojAssemblyReference.cache
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\GitVersionInformation.g.cs
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\AssemblyInfo.g.cs
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.AssemblyInfoInputs.cache
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.AssemblyInfo.cs
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.csproj.CoreCompileInputs.cache
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.dll
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\ref\Ac682.Extensions.Logging.Console.dll
+C:\Users\zqy02\Projects\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console\obj\Debug\net5.0\Ac682.Extensions.Logging.Console.pdb
