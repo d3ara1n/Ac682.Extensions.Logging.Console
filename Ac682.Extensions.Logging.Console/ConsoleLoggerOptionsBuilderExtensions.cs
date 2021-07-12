@@ -21,7 +21,8 @@ namespace Ac682.Extensions.Logging.Console
                 .AddFormatter<DateTimeFormatter>()
                 .AddFormatter<ByteFormatter>()
                 .AddFormatter<EnumFormatter>()
-                .AddFormatter<BoolFormatter>();
+                .AddFormatter<BoolFormatter>()
+                .AddFormatter<VersionFormatter>();
         }
     }
 }
