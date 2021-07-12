@@ -17,7 +17,6 @@ namespace Ac682.Extensions.Logging.Console.Formatters
                 new ColoredUnit()
                 {
                     Foreground = ConsoleColor.White,
-                    Background = ConsoleColor.Black,
                     Text = obj.ToString()
                 }
             };

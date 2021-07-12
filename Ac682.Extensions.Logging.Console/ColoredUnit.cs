@@ -9,7 +9,7 @@ namespace Ac682.Extensions.Logging.Console
         public ConsoleColor Background { get; set; }
         public string Text { get; set; }
         
-        public ColoredUnit(string text, ConsoleColor foreground = ConsoleColor.White, ConsoleColor background = ConsoleColor.Black)
+        public ColoredUnit(string text, ConsoleColor foreground = ConsoleColor.Gray, ConsoleColor background = ConsoleColor.Black)
         {
             Foreground = foreground;
             Background = background;

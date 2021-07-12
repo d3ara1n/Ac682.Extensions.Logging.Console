@@ -96,7 +96,7 @@ namespace Ac682.Extensions.Logging.Console
 
                 foreach (var prop in properties)
                 {
-                    if (prop is Array enu)
+                    if (prop is IEnumerable enu && !(prop is IEnumerable<char>))
                     {
                         var list = enu.Cast<object>().ToList();
                         Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray));
