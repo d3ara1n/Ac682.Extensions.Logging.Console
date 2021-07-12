@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace Ac682.Extensions.Logging.Console
 {
-    public class ConsoleLogger: ILogger
+    public class ConsoleLogger : ILogger
     {
         private readonly object locker = new object();
         private readonly LogLevel _minimalLevel;
@@ -30,7 +30,7 @@ namespace Ac682.Extensions.Logging.Console
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return (int) logLevel >= (int) _minimalLevel;
+            return (int)logLevel >= (int)_minimalLevel;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
@@ -48,7 +48,7 @@ namespace Ac682.Extensions.Logging.Console
                     LogLevel.Critical => "CRIT",
                     _ => "NONE"
                 };
-                
+
                 var datetime = DateTime.Now;
                 var category = (_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name);
                 // 20/07/22 00:11 DEBG NAME => STHSTH
@@ -62,12 +62,12 @@ namespace Ac682.Extensions.Logging.Console
                 // SConsole.Write($" {category} ");
 
                 List<object> properties = new List<object>();
-                
+
                 properties.Add(datetime);
                 properties.Add(" ");
                 properties.Add(logLevel);
                 properties.Add(" ");
-                
+
                 if (state is IEnumerable<KeyValuePair<string, object>> states)
                 {
                     const string KEY = "{OriginalFormat}";
@@ -79,19 +79,19 @@ namespace Ac682.Extensions.Logging.Console
                     int count = 0;
                     while ((index = format!.IndexOf("{}", index + 1, StringComparison.Ordinal)) != -1)
                     {
-                        properties.Add(format[(lastIndex == -1 ? 0: lastIndex )..index]);
-                        
+                        properties.Add(format[(lastIndex == -1 ? 0 : lastIndex)..index]);
+
                         properties.Add(args[count]);
 
                         lastIndex = index + 2;
                         count++;
                     }
 
-                    if(lastIndex == -1)
+                    if (lastIndex == -1)
                     {
                         properties.Add(format);
                     }
-                    
+
                 }
 
                 foreach (var prop in properties)
@@ -104,7 +104,7 @@ namespace Ac682.Extensions.Logging.Console
                         for (int i = 0; i < count; i++)
                         {
                             Write(list[i]);
-                            if(i < count - 1) Write(new ColoredUnit(", ", foreground:ConsoleColor.DarkGray));
+                            if (i < count - 1) Write(new ColoredUnit(", ", foreground: ConsoleColor.DarkGray));
                         }
                         Write(new ColoredUnit("]", foreground: ConsoleColor.DarkGray));
                     }
@@ -129,8 +129,9 @@ namespace Ac682.Extensions.Logging.Console
 
             foreach (var unit in units)
             {
+                SConsole.ResetColor();
                 SConsole.ForegroundColor = unit.Foreground;
-                SConsole.BackgroundColor = unit.Background;
+                if (unit.Background != ConsoleColor.Black) SConsole.BackgroundColor = unit.Background;
                 SConsole.Write(unit.Text);
             }
         }
