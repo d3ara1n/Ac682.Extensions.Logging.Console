@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using SConsole = System.Console;
 using Microsoft.Extensions.Logging;
 
@@ -8,13 +10,15 @@ namespace Ac682.Extensions.Logging.Console
 {
     public class ConsoleLogger: ILogger
     {
-    private static readonly object locker = new object();
+        private readonly object locker = new object();
         private readonly LogLevel _minimalLevel;
         private readonly string _name;
+        private readonly IEnumerable<Type> _formatters;
 
-        public ConsoleLogger(string name, LogLevel minimalLevel = LogLevel.Debug)
+        public ConsoleLogger(string name, IEnumerable<Type> formatters, LogLevel minimalLevel = LogLevel.Debug)
         {
             _name = name;
+            _formatters = formatters;
             _minimalLevel = minimalLevel;
         }
 
@@ -44,10 +48,7 @@ namespace Ac682.Extensions.Logging.Console
                     _ => "NONE"
                 };
                 
-                var datetime = DateTime.Now.ToString("yy/MM/dd HH:mm:ss ");
-                
-                var color = GetColor(logLevel);
-                if (color.Item1 != ConsoleColor.Black) SConsole.BackgroundColor = color.Item1;
+                var datetime = DateTime.Now;
                 var category = (_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name);
                 // 20/07/22 00:11 DEBG NAME => STHSTH
                 // SConsole.ResetColor();
@@ -58,29 +59,75 @@ namespace Ac682.Extensions.Logging.Console
                 // SConsole.ResetColor();
                 // SConsole.ForegroundColor = ConsoleColor.DarkCyan;
                 // SConsole.Write($" {category} ");
-                // SConsole.ForegroundColor = ConsoleColor.White;
-                // SConsole.WriteLine(formatter(state, exception));
 
                 List<object> properties = new List<object>();
-                if (state is IEnumerable<KeyValuePair<string, object>>)
+                
+                properties.Add(datetime);
+                properties.Add(" ");
+                properties.Add(logLevel);
+                properties.Add(" ");
+                
+                if (state is IEnumerable<KeyValuePair<string, object>> states)
                 {
-                    //TODO: 明天接着干
+                    const string KEY = "{OriginalFormat}";
+                    var format = states.FirstOrDefault(x => x.Key == KEY).Value.ToString();
+                    var args = states.Where(x => x.Key != KEY).Select(x => x.Value).ToList();
+
+                    int index = -1;
+                    int lastIndex = -1;
+                    int count = 0;
+                    while ((index = format!.IndexOf("{}", index + 1, StringComparison.Ordinal)) != -1)
+                    {
+                        properties.Add(format[(lastIndex == -1 ? 0: lastIndex )..index]);
+                        
+                        properties.Add(args[count]);
+
+                        lastIndex = index + 2;
+                        count++;
+                    }
+                    
                 }
+
+                foreach (var prop in properties)
+                {
+                    if (prop is ICollection enu)
+                    {
+                        var list = new ArrayList();
+                        list.AddRange(enu);
+                        Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray));
+                        int count = list.Count;
+                        for (int i = 0; i < count; i++)
+                        {
+                            Write(list[i]);
+                            if(i < count - 1) Write(new ColoredUnit(", ", foreground:ConsoleColor.DarkGray));
+                        }
+                        Write(new ColoredUnit("]", foreground: ConsoleColor.DarkGray));
+                    }
+                    else
+                    {
+                        Write(prop);
+                    }
+                }
+                SConsole.WriteLine();
             }
         }
 
-        private (ConsoleColor, ConsoleColor) GetColor(LogLevel level)
+        private void Write(object obj)
         {
-            return level switch
+            IObjectLoggingFormatter inst = null;
+            var form = _formatters.FirstOrDefault(x =>
             {
-                LogLevel.Trace => (ConsoleColor.Black, ConsoleColor.Cyan),
-                LogLevel.Debug => (ConsoleColor.Black, ConsoleColor.DarkMagenta),
-                LogLevel.Information => (ConsoleColor.Black, ConsoleColor.Green),
-                LogLevel.Warning => (ConsoleColor.Black, ConsoleColor.Yellow),
-                LogLevel.Error => (ConsoleColor.Black, ConsoleColor.Red),
-                LogLevel.Critical => (ConsoleColor.Red, ConsoleColor.White),
-                _ => (ConsoleColor.Black, ConsoleColor.Gray)
-            };
+                inst = Activator.CreateInstance(x) as IObjectLoggingFormatter;
+                return inst!.IsTypeAvailable(obj.GetType());
+            });
+            var units = inst.Format(obj, obj.GetType()) ?? Enumerable.Empty<ColoredUnit>();
+
+            foreach (var unit in units)
+            {
+                SConsole.ForegroundColor = unit.Foreground;
+                SConsole.BackgroundColor = unit.Background;
+                SConsole.Write(unit.Text);
+            }
         }
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Ac682.Extensions.Logging.Console.Formatters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Ac682.Extensions.Logging.Console
 {
@@ -9,8 +11,7 @@ namespace Ac682.Extensions.Logging.Console
     {
         public LogLevel MinimalLevel { get; set; } = LogLevel.Debug;
         [Obsolete]
-        public string Template { get; set; } = "{date:yy:mm:dd} {time:HH:MM:SS} {level:4} {category:short} {message}";
-
-        public IList<IObjectLoggingFormatter> Formatters { get; set; }
+        public string Template { get; set; } = "{date} {time} {level} {message}";
+        public IEnumerable<Type> Formatters { get; set; } = new[] {typeof(StringFormatter), typeof(FallbackFormatter)};
     }
 }

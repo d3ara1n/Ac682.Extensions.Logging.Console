@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ac682.Extensions.Logging.Console
 {
-    public class ConsoleLoggerProvider: ILoggerProvider
+    public class ConsoleLoggerProvider : ILoggerProvider
     {
         private readonly ConsoleLoggerOptions _options;
         private readonly ConcurrentDictionary<string, ILogger> loggers = new ConcurrentDictionary<string, ILogger>();
@@ -15,7 +15,8 @@ namespace Ac682.Extensions.Logging.Console
 
         public ILogger CreateLogger(string categoryName)
         {
-            return loggers.GetOrAdd(categoryName, name => new ConsoleLogger(name, _options.MinimalLevel));
+            return loggers.GetOrAdd(categoryName,
+                name => new ConsoleLogger(name, _options.Formatters, _options.MinimalLevel));
         }
 
         public void Dispose()
