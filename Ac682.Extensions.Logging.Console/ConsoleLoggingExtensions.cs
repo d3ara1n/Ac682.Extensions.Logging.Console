@@ -7,7 +7,7 @@ namespace Ac682.Extensions.Logging.Console
     {
         public static ILoggingBuilder AddConsole(this ILoggingBuilder builder)
         {
-            return AddConsole(builder, new ConsoleLoggerOptions {MinimalLevel = LogLevel.Trace});
+            return AddConsole(builder, c => c.AddBuiltinFormatters().SetMinimalLevel(LogLevel.Information));
         }
 
         public static ILoggingBuilder AddConsole(this ILoggingBuilder builder, ConsoleLoggerOptions options)

@@ -18,9 +18,9 @@ namespace Ac682.Extensions.Logging.Console
                 .AddFormatter<ColoredUnitFormatter>()
                 .AddFormatter<NumberFormatter>()
                 .AddFormatter<LogLevelFormatter>()
-                .AddFormatter<EnumFormatter>()
                 .AddFormatter<DateTimeFormatter>()
                 .AddFormatter<ByteFormatter>()
+                .AddFormatter<EnumFormatter>()
                 .AddFormatter<BoolFormatter>();
         }
     }

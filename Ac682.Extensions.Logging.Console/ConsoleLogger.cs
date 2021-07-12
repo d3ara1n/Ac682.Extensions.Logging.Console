@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using SConsole = System.Console;
 using Microsoft.Extensions.Logging;
+using System.Collections.ObjectModel;
 
 namespace Ac682.Extensions.Logging.Console
 {
@@ -85,15 +86,19 @@ namespace Ac682.Extensions.Logging.Console
                         lastIndex = index + 2;
                         count++;
                     }
+
+                    if(lastIndex == -1)
+                    {
+                        properties.Add(format);
+                    }
                     
                 }
 
                 foreach (var prop in properties)
                 {
-                    if (prop is ICollection enu)
+                    if (prop is Array enu)
                     {
-                        var list = new ArrayList();
-                        list.AddRange(enu);
+                        var list = enu.Cast<object>().ToList();
                         Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray));
                         int count = list.Count;
                         for (int i = 0; i < count; i++)

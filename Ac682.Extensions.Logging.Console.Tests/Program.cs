@@ -14,7 +14,8 @@ namespace Ac682.Extensions.Logging.Console.Tests
             var provider = new ConsoleLoggerProvider(builder.Build());
 
             var logger = provider.CreateLogger(nameof(Program));
-            logger.LogInformation("Hello, {}! Now is {}. And I am {}", "World", DateTime.Now, ConsoleColor.Blue);
+            logger.LogInformation("Hello, World!");
+            logger.LogInformation("Now is {}. And I am {}", DateTime.Now, ConsoleColor.Blue);
             logger.LogInformation("Hi {}, which is {}", new byte[] {0, 127, 255}, false);
         }
     }
