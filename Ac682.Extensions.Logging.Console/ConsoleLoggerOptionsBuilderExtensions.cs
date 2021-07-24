@@ -19,6 +19,7 @@ namespace Ac682.Extensions.Logging.Console
                 .AddFormatter<NumberFormatter>()
                 .AddFormatter<LogLevelFormatter>()
                 .AddFormatter<DateTimeFormatter>()
+                .AddFormatter<ExceptionFormatter>()
                 .AddFormatter<ByteFormatter>()
                 .AddFormatter<EnumFormatter>()
                 .AddFormatter<BoolFormatter>()

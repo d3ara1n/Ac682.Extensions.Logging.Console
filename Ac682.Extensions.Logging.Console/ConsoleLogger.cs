@@ -51,22 +51,8 @@ namespace Ac682.Extensions.Logging.Console
 
                 var datetime = DateTime.Now;
                 var category = (_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name);
-                // 20/07/22 00:11 DEBG NAME => STHSTH
-                // SConsole.ResetColor();
-                // SConsole.ForegroundColor = ConsoleColor.Blue;
-                // SConsole.Write(datetime);
-                // SConsole.ForegroundColor = color.Item2;
-                // SConsole.Write($"{levelName}");
-                // SConsole.ResetColor();
-                // SConsole.ForegroundColor = ConsoleColor.DarkCyan;
-                // SConsole.Write($" {category} ");
+                List<object> properties = new List<object> {datetime, " ", logLevel, " "};
 
-                List<object> properties = new List<object>();
-
-                properties.Add(datetime);
-                properties.Add(" ");
-                properties.Add(logLevel);
-                properties.Add(" ");
 
                 if (state is IEnumerable<KeyValuePair<string, object>> states)
                 {
@@ -79,7 +65,7 @@ namespace Ac682.Extensions.Logging.Console
                     int count = 0;
                     while ((index = format!.IndexOf("{}", index + 1, StringComparison.Ordinal)) != -1)
                     {
-                        properties.Add(format[(lastIndex == -1 ? 0 : lastIndex)..index]);
+                        properties.Add(new ColoredUnit(format[(lastIndex == -1 ? 0 : lastIndex)..index]));
 
                         properties.Add(args[count]);
 
@@ -89,9 +75,15 @@ namespace Ac682.Extensions.Logging.Console
 
                     if (lastIndex == -1)
                     {
-                        properties.Add(format);
+                        properties.Add(new ColoredUnit(format));
                     }
 
+                }
+
+                if (exception != null)
+                {
+                    properties.Add("\n");
+                    properties.Add(exception);
                 }
 
                 foreach (var prop in properties)
