@@ -15,7 +15,7 @@ namespace Ac682.Extensions.Logging.Console.Tests
 
             var logger = provider.CreateLogger(nameof(Program));
             logger.LogInformation("Hello, World!");
-            logger.LogInformation("I am {}", "master");
+            logger.LogInformation("I am {}, your master", "master");
             logger.LogInformation("Now is {}. And I am {}", DateTime.Now, ConsoleColor.Blue);
             logger.LogInformation("Hi {}, which is {}", new byte[] {0, 127, 255}, false);
             logger.LogError(new ArgumentNullException(nameof(args)), "Get out");
