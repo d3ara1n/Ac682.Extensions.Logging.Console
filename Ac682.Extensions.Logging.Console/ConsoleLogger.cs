@@ -73,6 +73,11 @@ namespace Ac682.Extensions.Logging.Console
                         count++;
                     }
 
+                    if (lastIndex != -1 && lastIndex < format.Length)
+                    {
+                        properties.Add(new ColoredUnit(format[lastIndex..]));
+                    }
+
                     if (lastIndex == -1)
                     {
                         properties.Add(new ColoredUnit(format));
