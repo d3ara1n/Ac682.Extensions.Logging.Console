@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
@@ -21,11 +22,17 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return numberTypes.Any(x => type == x);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
+            var number = obj.ToString();
+            if (format != null && obj is IFormattable formattable)
+            {
+                number = formattable.ToString(format, CultureInfo.CurrentCulture);
+            }
+            
             return new[]
             {
-                new ColoredUnit(obj.ToString(), foreground: ConsoleColor.DarkYellow)
+                new ColoredUnit(number, foreground: ConsoleColor.DarkYellow)
             };
         }
     }

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using Ac682.Extensions.Logging.Console.Formatters;
 using Microsoft.Extensions.Logging;
 
 namespace Ac682.Extensions.Logging.Console.Tests
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var builder = new ConsoleLoggerOptionsBuilder();
             builder.AddBuiltinFormatters();
@@ -15,10 +13,10 @@ namespace Ac682.Extensions.Logging.Console.Tests
 
             var logger = provider.CreateLogger(nameof(Program));
             logger.LogInformation("Hello, World!");
-            logger.LogInformation("I am {}, your master", "master");
-            logger.LogInformation("Now is {}. And I am {}", DateTime.Now, ConsoleColor.Blue);
-            logger.LogInformation("Hi {}, which is {}", new byte[] {0, 127, 255}, false);
-            logger.LogError(new ArgumentNullException(nameof(args)), "Get out");
+            logger.LogInformation("I am {Master}, your master", "master");
+            logger.LogInformation("Now is {NowDateTime}. And I am {Color}", DateTime.Now, ConsoleColor.Blue);
+            logger.LogInformation("Hi {Bytes}, which is {Boolean}", new byte[] {0, 127, 255}, false);
+            logger.LogError(new ArgumentNullException(nameof(Main)), "Get out");
         }
     }
 }

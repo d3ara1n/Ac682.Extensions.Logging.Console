@@ -10,11 +10,15 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(DateTime);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
-            return new ColoredUnit[]
+            return new[]
             {
-                new ColoredUnit(obj.ToString(), foreground: ConsoleColor.Blue)
+                new ColoredUnit(format switch
+                {
+                    null => obj.ToString(),
+                    _ => ((DateTime)obj).ToString(format)
+                }, foreground: ConsoleColor.Blue)
             };
         }
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
@@ -11,10 +12,31 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(LogLevel);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
+            format ??= "N4";
             var name = GetLogLevelName(((LogLevel) obj));
-            return new ColoredUnit[]
+
+            var regex = new Regex("^(?<format>[ULN]??)(?<length>[0-9]??)$");
+            var match = regex.Match(format.ToUpper());
+            var gFormat = match.Groups["format"];
+            var gLength = match.Groups["length"];
+            if (gFormat.Length > 0)
+            {
+                name = gFormat.Value switch
+                {
+                    "U" => name.ToUpper(),
+                    "L" => name.ToLower(),
+                    "N" or _ => name
+                };
+            }
+
+            if (gLength.Length > 0 && int.TryParse(gLength.Value, out int length) && length < name.Length)
+            {
+                name = name.Substring(0, length);
+            }
+            
+            return new[]
             {
                 obj switch
                 {
@@ -31,17 +53,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
 
         private string GetLogLevelName(LogLevel level)
         {
-            return level switch
-            {
-                LogLevel.Trace => "TRAC",
-                LogLevel.Debug => "DEBG",
-                LogLevel.Information => "INFO",
-                LogLevel.Warning => "WARN",
-                LogLevel.Error => "ERRO",
-                LogLevel.Critical => "CRIT",
-                LogLevel.None => "NONE",
-                _ => "UNKO"
-            };
+            return level.ToString();
         }
     }
 }

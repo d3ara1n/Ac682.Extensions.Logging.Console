@@ -6,6 +6,8 @@ using System.Linq;
 using SConsole = System.Console;
 using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Text.RegularExpressions;
 
 namespace Ac682.Extensions.Logging.Console
 {
@@ -38,83 +40,72 @@ namespace Ac682.Extensions.Logging.Console
         {
             lock (locker)
             {
-                var levelName = logLevel switch
-                {
-                    LogLevel.Trace => "TRAC",
-                    LogLevel.Debug => "DEBG",
-                    LogLevel.Information => "INFO",
-                    LogLevel.Warning => "WARN",
-                    LogLevel.Error => "ERRO",
-                    LogLevel.Critical => "CRIT",
-                    _ => "NONE"
-                };
 
                 var datetime = DateTime.Now;
-                var category = (_name.Contains('.') ? _name.Substring(_name.LastIndexOf('.') + 1) : _name);
-                List<object> properties = new List<object> {datetime, " ", logLevel, " "};
+                var properties = new List<(object,string)> {(datetime, null), (" ", null), (logLevel, "U4"), (" ", null)};
 
 
                 if (state is IEnumerable<KeyValuePair<string, object>> states)
                 {
                     const string KEY = "{OriginalFormat}";
-                    var format = states.FirstOrDefault(x => x.Key == KEY).Value.ToString();
+                    var format = states.First(x => x.Key == KEY).Value.ToString();
                     var args = states.Where(x => x.Key != KEY).Select(x => x.Value).ToList();
 
-                    int index = -1;
-                    int lastIndex = -1;
-                    int count = 0;
-                    while ((index = format!.IndexOf("{}", index + 1, StringComparison.Ordinal)) != -1)
+                    var regex = new Regex("{(?<name>[A-Za-z0-9_.]*)(?<format>:[0-9a-zA-Z-_+.]*)??}");
+                    var matches = regex.Matches(format);
+                    var addedLength = 0;
+                    if (matches.Count > 0)
                     {
-                        properties.Add(new ColoredUnit(format[(lastIndex == -1 ? 0 : lastIndex)..index]));
+                        for(var count = 0; count < matches.Count; count++)
+                        {
+                            properties.Add((new ColoredUnit(format[addedLength..matches[count].Index]), null));
+                            var group = matches[count].Groups["format"];
+                            properties.Add((args[count], group.Value.Length > 0? group.Value: null));
+                            addedLength = matches[count].Index + matches[count].Length;
+                        }
 
-                        properties.Add(args[count]);
-
-                        lastIndex = index + 2;
-                        count++;
+                        if (format.Length > addedLength)
+                        {
+                            properties.Add((new ColoredUnit(format[addedLength..]), null));
+                        }
                     }
-
-                    if (lastIndex != -1 && lastIndex < format.Length)
+                    else
                     {
-                        properties.Add(new ColoredUnit(format[lastIndex..]));
-                    }
-
-                    if (lastIndex == -1)
-                    {
-                        properties.Add(new ColoredUnit(format));
+                        properties.Add((new ColoredUnit(format), null));
                     }
 
                 }
 
                 if (exception != null)
                 {
-                    properties.Add("\n");
-                    properties.Add(exception);
+                    properties.Add(("\n", null));
+                    properties.Add((exception, null));
                 }
 
-                foreach (var prop in properties)
+                foreach (var (prop, format) in properties)
                 {
                     if (prop is IEnumerable enu && !(prop is IEnumerable<char>))
                     {
                         var list = enu.Cast<object>().ToList();
-                        Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray));
+                        Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray), format);
                         int count = list.Count;
                         for (int i = 0; i < count; i++)
                         {
-                            Write(list[i]);
-                            if (i < count - 1) Write(new ColoredUnit(", ", foreground: ConsoleColor.DarkGray));
+                            Write(list[i], format);
+                            if (i < count - 1) Write(new ColoredUnit(", ", foreground: ConsoleColor.DarkGray), format);
                         }
-                        Write(new ColoredUnit("]", foreground: ConsoleColor.DarkGray));
+                        Write(new ColoredUnit("]", foreground: ConsoleColor.DarkGray), format);
                     }
                     else
                     {
-                        Write(prop);
+                        Write(prop, format);
                     }
                 }
                 SConsole.WriteLine();
             }
         }
 
-        private void Write(object obj)
+        private void Write(object obj, string format)
         {
             IObjectLoggingFormatter inst = null;
             var form = _formatters.FirstOrDefault(x =>
@@ -122,7 +113,7 @@ namespace Ac682.Extensions.Logging.Console
                 inst = Activator.CreateInstance(x) as IObjectLoggingFormatter;
                 return inst!.IsTypeAvailable(obj.GetType());
             });
-            var units = inst.Format(obj, obj.GetType()) ?? Enumerable.Empty<ColoredUnit>();
+            var units = inst.Format(obj, obj.GetType(), format) ?? Enumerable.Empty<ColoredUnit>();
 
             foreach (var unit in units)
             {

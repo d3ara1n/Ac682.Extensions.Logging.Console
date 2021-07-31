@@ -10,11 +10,16 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(bool);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
             return new[]
             {
-                new ColoredUnit(obj.ToString(), foreground: ConsoleColor.Magenta)
+                new ColoredUnit(format?.ToUpper() switch
+                {
+                    "U" => obj.ToString()!.ToUpper(),
+                    "L" => obj.ToString()!.ToLower(),
+                    null or _ => obj.ToString()
+                }, foreground: ConsoleColor.Magenta)
             };
         }
     }

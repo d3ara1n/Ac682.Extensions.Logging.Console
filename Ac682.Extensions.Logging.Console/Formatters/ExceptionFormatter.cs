@@ -10,12 +10,16 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(Exception);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
-
+            format ??= "FULL";
             return new[]
             {
-                new ColoredUnit(obj.ToString())
+                new ColoredUnit(format switch
+                {
+                    "MESSAGE" => ((Exception)obj).Message,
+                    "FULL" or _ => obj.ToString()
+                })
             };
         }
     }

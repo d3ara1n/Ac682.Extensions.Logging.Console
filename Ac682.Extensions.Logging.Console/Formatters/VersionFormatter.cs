@@ -5,7 +5,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
 {
     public class VersionFormatter : IObjectLoggingFormatter
     {
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
             return new []
             {

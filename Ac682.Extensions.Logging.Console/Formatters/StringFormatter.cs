@@ -10,7 +10,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(string);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type)
+        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
         {
             return new[]
             {
