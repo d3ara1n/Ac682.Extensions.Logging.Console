@@ -11,7 +11,7 @@ namespace Ac682.Extensions.Logging.Console
     {
         public LogLevel MinimalLevel { get; set; } = LogLevel.Debug;
         [Obsolete]
-        public string Template { get; set; } = "{date} {time} {level} {message}";
+        public string Template { get; set; } = "{DateTime:HH:mm:ss} {Level} {message}";
         public IEnumerable<Type> Formatters { get; set; } = new[] {typeof(StringFormatter), typeof(FallbackFormatter)};
     }
 }

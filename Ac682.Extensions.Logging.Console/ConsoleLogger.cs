@@ -51,7 +51,7 @@ namespace Ac682.Extensions.Logging.Console
                     var format = states.First(x => x.Key == KEY).Value.ToString();
                     var args = states.Where(x => x.Key != KEY).Select(x => x.Value).ToList();
 
-                    var regex = new Regex("{(?<name>[A-Za-z0-9_.]*)(?<format>:[0-9a-zA-Z-_+.]*)??}");
+                    var regex = new Regex("{(?<name>[A-Za-z0-9_.]*)[:]?(?<format>[0-9a-zA-Z-_+.:]*)??}");
                     var matches = regex.Matches(format);
                     var addedLength = 0;
                     if (matches.Count > 0)
