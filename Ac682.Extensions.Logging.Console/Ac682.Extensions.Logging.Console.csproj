@@ -2,6 +2,13 @@
 
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
+        <Authors>Chien Zhang</Authors>
+        <RepositoryUrl>https://github.com/ac682/Ac682.Extensions.Logging.Console</RepositoryUrl>
+        <Title>Ac682.Extensions.Logging.Console</Title>
+        <Summary>a provider for Microsoft.Extensions.Logging</Summary>
+        <Description>a provider for Microsoft.Extensions.Logging which provides a colored console logger.</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        
     </PropertyGroup>
 
     <ItemGroup>
