@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
@@ -22,7 +23,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return numberTypes.Any(x => type == x);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
+        public Markup Format(object obj, Type type, string format = null)
         {
             var number = obj.ToString();
             if (format != null && obj is IFormattable formattable)
@@ -30,10 +31,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
                 number = formattable.ToString(format, CultureInfo.CurrentCulture);
             }
             
-            return new[]
-            {
-                new ColoredUnit(number, foreground: ConsoleColor.DarkYellow)
-            };
+            return new Markup(number, new Style(Color.Orange1));
         }
     }
 }

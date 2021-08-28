@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
@@ -10,17 +11,14 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(bool);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
+        public Markup Format(object obj, Type type, string format = null)
         {
-            return new[]
+            return new Markup(format?.ToUpper() switch
             {
-                new ColoredUnit(format?.ToUpper() switch
-                {
-                    "U" => obj.ToString()!.ToUpper(),
-                    "L" => obj.ToString()!.ToLower(),
-                    null or _ => obj.ToString()
-                }, foreground: ConsoleColor.Magenta)
-            };
+                "U" => obj.ToString()!.ToUpper(),
+                "L" => obj.ToString()!.ToLower(),
+                null or _ => obj.ToString()
+            }, new Style(Color.Fuchsia));
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
@@ -10,18 +11,15 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type.IsEnum;
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
+        public Markup Format(object obj, Type type, string format = null)
         {
             format ??= "L";
-            return new[]
-            {
-                new ColoredUnit(format.ToUpper() switch
+            return new Markup(format.ToUpper() switch
                 {
                     "L" => $"{type.Name}.{obj}",
                     "S" => obj.ToString(),
                     _ => obj.ToString()
-                }, foreground: ConsoleColor.DarkCyan)
-            };
+                }, new Style(Color.Cyan1));
         }
     }
 }

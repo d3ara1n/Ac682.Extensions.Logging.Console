@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console
 {
@@ -20,7 +21,7 @@ namespace Ac682.Extensions.Logging.Console
         /// <param name="obj">被格式化的对象实例</param>
         /// <param name="type">其类型</param>
         /// <param name="format">字符串表示的格式</param>
-        /// <returns>用户 <see cref="ColoredUnit"/> 表示的可打印结果</returns>
-        IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null);
+        /// <returns>用 <see cref="Markup"/> 表示的可打印结果</returns>
+        Markup Format(object obj, Type type, string format = null);
     }
 }

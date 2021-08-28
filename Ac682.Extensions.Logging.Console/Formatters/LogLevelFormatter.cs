@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
@@ -12,7 +13,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(LogLevel);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
+        public Markup Format(object obj, Type type, string format = null)
         {
             format ??= "N4";
             var name = GetLogLevelName(((LogLevel) obj));
@@ -35,19 +36,16 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             {
                 name = name.Substring(0, length);
             }
-            
-            return new[]
+
+            return obj switch
             {
-                obj switch
-                {
-                    LogLevel.Trace => new ColoredUnit(name, foreground:ConsoleColor.Cyan),
-                    LogLevel.Debug => new ColoredUnit(name, foreground: ConsoleColor.DarkMagenta),
-                    LogLevel.Information => new ColoredUnit(name, foreground:ConsoleColor.Green),
-                    LogLevel.Warning => new ColoredUnit(name, foreground:ConsoleColor.Yellow),
-                    LogLevel.Error => new ColoredUnit(name, foreground:ConsoleColor.Red),
-                    LogLevel.Critical => new ColoredUnit(name, foreground:ConsoleColor.White, background: ConsoleColor.Red),
-                    _ => new ColoredUnit(name)
-                },
+                LogLevel.Trace => new Markup(name, new Style(Color.Cyan1)),
+                LogLevel.Debug => new Markup(name, new Style(Color.DarkMagenta)),
+                LogLevel.Information => new Markup(name, new Style(Color.Green)),
+                LogLevel.Warning => new Markup(name, new Style(Color.Yellow)),
+                LogLevel.Error => new Markup(name, new Style(Color.Red)),
+                LogLevel.Critical => new Markup(name, new Style(Color.White, Color.Red)),
+                _ => new Markup(name)
             };
         }
 

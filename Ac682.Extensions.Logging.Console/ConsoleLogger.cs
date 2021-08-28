@@ -8,12 +8,13 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console
 {
     public class ConsoleLogger : ILogger
     {
-        private readonly object locker = new object();
+        private static readonly object locker = new object();
         private readonly LogLevel _minimalLevel;
         private readonly string _name;
         private readonly IEnumerable<Type> _formatters;
@@ -35,6 +36,8 @@ namespace Ac682.Extensions.Logging.Console
             return (int)logLevel >= (int)_minimalLevel;
         }
 
+
+        private static readonly Regex formatRegex = new Regex(@"\{(?<name>[A-Za-z0-9_.]*)[:]?(?<format>[0-9a-zA-Z-_+.:]*)??\}");
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
             Func<TState, Exception, string> formatter)
         {
@@ -51,14 +54,14 @@ namespace Ac682.Extensions.Logging.Console
                     var format = states.First(x => x.Key == KEY).Value.ToString();
                     var args = states.Where(x => x.Key != KEY).Select(x => x.Value).ToList();
 
-                    var regex = new Regex("{(?<name>[A-Za-z0-9_.]*)[:]?(?<format>[0-9a-zA-Z-_+.:]*)??}");
-                    var matches = regex.Matches(format);
+                    
+                    var matches = formatRegex.Matches(format);
                     var addedLength = 0;
                     if (matches.Count > 0)
                     {
                         for(var count = 0; count < matches.Count; count++)
                         {
-                            properties.Add((new ColoredUnit(format[addedLength..matches[count].Index]), null));
+                            properties.Add((new Markup(format[addedLength..matches[count].Index], new Style(Color.Silver)), null));
                             var group = matches[count].Groups["format"];
                             properties.Add((args[count], group.Value.Length > 0? group.Value: null));
                             addedLength = matches[count].Index + matches[count].Length;
@@ -66,12 +69,12 @@ namespace Ac682.Extensions.Logging.Console
 
                         if (format.Length > addedLength)
                         {
-                            properties.Add((new ColoredUnit(format[addedLength..]), null));
+                            properties.Add((new Markup(format[addedLength..], new Style(Color.Silver)), null));
                         }
                     }
                     else
                     {
-                        properties.Add((new ColoredUnit(format), null));
+                        properties.Add((new Markup(format, new Style(Color.Silver)), null));
                     }
 
                 }
@@ -81,28 +84,35 @@ namespace Ac682.Extensions.Logging.Console
                     properties.Add(("\n", null));
                     properties.Add((exception, null));
                 }
-
-                foreach (var (prop, format) in properties)
-                {
-                    if (prop is IEnumerable enu && !(prop is IEnumerable<char>))
-                    {
-                        var list = enu.Cast<object>().ToList();
-                        Write(new ColoredUnit("[", foreground: ConsoleColor.DarkGray), format);
-                        int count = list.Count;
-                        for (int i = 0; i < count; i++)
-                        {
-                            Write(list[i], format);
-                            if (i < count - 1) Write(new ColoredUnit(", ", foreground: ConsoleColor.DarkGray), format);
-                        }
-                        Write(new ColoredUnit("]", foreground: ConsoleColor.DarkGray), format);
-                    }
-                    else
-                    {
-                        Write(prop, format);
-                    }
-                }
-                SConsole.WriteLine();
+                
+                properties.Add(("\n", null));
+                
+                WriteAll(properties);
             }
+        }
+
+        private void WriteAll(IEnumerable<(object, string)> properties)
+        {
+            foreach (var (prop, format) in properties)
+            {
+                if (prop is IEnumerable enu && prop is not IEnumerable<char>)
+                {
+                    var list = enu.Cast<object>().ToList();
+                    Write(new Markup("[[", new Style(Color.Grey)), format);
+                    int count = list.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        Write(list[i], format);
+                        if (i < count - 1) Write(new Markup(", ", new Style(Color.Grey)), format);
+                    }
+                    Write(new Markup("]]", new Style(Color.Grey)), format);
+                }
+                else
+                {
+                    Write(prop, format);
+                }
+            }
+            
         }
 
         private void Write(object obj, string format)
@@ -113,14 +123,11 @@ namespace Ac682.Extensions.Logging.Console
                 inst = Activator.CreateInstance(x) as IObjectLoggingFormatter;
                 return inst!.IsTypeAvailable(obj.GetType());
             });
-            var units = inst.Format(obj, obj.GetType(), format) ?? Enumerable.Empty<ColoredUnit>();
+            var markup = inst.Format(obj, obj.GetType(), format);
 
-            foreach (var unit in units)
+            if (markup != null)
             {
-                SConsole.ResetColor();
-                SConsole.ForegroundColor = unit.Foreground;
-                if (unit.Background != ConsoleColor.Black) SConsole.BackgroundColor = unit.Background;
-                SConsole.Write(unit.Text);
+                AnsiConsole.Render(markup);
             }
         }
     }

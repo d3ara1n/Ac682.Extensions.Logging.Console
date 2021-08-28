@@ -15,7 +15,7 @@ namespace Ac682.Extensions.Logging.Console
         {
             return builder
                 .AddFormatter<StringFormatter>()
-                .AddFormatter<ColoredUnitFormatter>()
+                .AddFormatter<MarkupFormatter>()
                 .AddFormatter<NumberFormatter>()
                 .AddFormatter<LogLevelFormatter>()
                 .AddFormatter<DateTimeFormatter>()

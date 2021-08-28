@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
@@ -10,17 +11,15 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(Exception);
         }
 
-        public IEnumerable<ColoredUnit> Format(object obj, Type type, string format = null)
+        public Markup Format(object obj, Type type, string format = null)
         {
             format ??= "FULL";
-            return new[]
-            {
-                new ColoredUnit(format switch
+            return
+                new Markup(format switch
                 {
                     "MESSAGE" => ((Exception)obj).Message,
                     "FULL" or _ => obj.ToString()
-                })
-            };
+                }, new Style(Color.Silver));
         }
     }
 }
