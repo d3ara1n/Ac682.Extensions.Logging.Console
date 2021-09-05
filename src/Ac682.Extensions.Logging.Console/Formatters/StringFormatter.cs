@@ -11,9 +11,9 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(string);
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
-            return new Markup(obj.ToString(), new Style(Color.White));
+            return $"[bold white]{obj}[/]";
         }
     }
 }

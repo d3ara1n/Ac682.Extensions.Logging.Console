@@ -23,7 +23,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return numberTypes.Any(x => type == x);
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
             var number = obj.ToString();
             if (format != null && obj is IFormattable formattable)
@@ -31,7 +31,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
                 number = formattable.ToString(format, CultureInfo.CurrentCulture);
             }
             
-            return new Markup(number, new Style(Color.Orange1));
+            return $"[orange1]{number}[/]";
         }
     }
 }

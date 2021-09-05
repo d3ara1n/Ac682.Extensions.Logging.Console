@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
-using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Formatters
 {
-    public class DateTimeFormatter: IObjectLoggingFormatter
+    public class TimeSpanFormatter: IObjectLoggingFormatter
     {
         public bool IsTypeAvailable(Type type)
         {
-            return type == typeof(DateTime);
+            return type == typeof(TimeSpan);
         }
 
         public string Format(object obj, Type type, string format = null)
@@ -16,7 +14,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             var line = format switch
             {
                 null => obj.ToString(),
-                _ => ((DateTime)obj).ToString(format)
+                _ => ((TimeSpan)obj).ToString(format)
             };
             return $"[blue]{line}[/]";
         }

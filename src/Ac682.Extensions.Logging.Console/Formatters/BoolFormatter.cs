@@ -11,14 +11,15 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(bool);
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
-            return new Markup(format?.ToUpper() switch
+            var line = format?.ToUpper() switch
             {
                 "U" => obj.ToString()!.ToUpper(),
                 "L" => obj.ToString()!.ToLower(),
                 null or _ => obj.ToString()
-            }, new Style(Color.Fuchsia));
+            };
+            return $"[bold fuchsia]{line}[/]";
         }
     }
 }

@@ -13,22 +13,22 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(LogLevel);
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
-            format ??= "N4";
+            format ??= "n4";
             var name = GetLogLevelName(((LogLevel) obj));
 
-            var regex = new Regex("^(?<format>[ULN]??)(?<length>[0-9]??)$");
+            var regex = new Regex("^(?<format>[ULNuln]??)(?<length>[0-9]??)$");
             var match = regex.Match(format.ToUpper());
             var gFormat = match.Groups["format"];
             var gLength = match.Groups["length"];
             if (gFormat.Length > 0)
             {
-                name = gFormat.Value switch
+                name = gFormat.Value.ToLower() switch
                 {
-                    "U" => name.ToUpper(),
-                    "L" => name.ToLower(),
-                    "N" or _ => name
+                    "u" => name.ToUpper(),
+                    "l" => name.ToLower(),
+                    "n" or _ => name
                 };
             }
 
@@ -37,16 +37,17 @@ namespace Ac682.Extensions.Logging.Console.Formatters
                 name = name.Substring(0, length);
             }
 
-            return obj switch
+            var color = obj switch
             {
-                LogLevel.Trace => new Markup(name, new Style(Color.Cyan1)),
-                LogLevel.Debug => new Markup(name, new Style(Color.DarkMagenta)),
-                LogLevel.Information => new Markup(name, new Style(Color.Green)),
-                LogLevel.Warning => new Markup(name, new Style(Color.Yellow)),
-                LogLevel.Error => new Markup(name, new Style(Color.Red)),
-                LogLevel.Critical => new Markup(name, new Style(Color.White, Color.Red)),
-                _ => new Markup(name)
+                LogLevel.Trace => "cyan1",
+                LogLevel.Debug => "darkmagenta",
+                LogLevel.Information => "lime",
+                LogLevel.Warning => "yellow",
+                LogLevel.Error => "red",
+                LogLevel.Critical => "white on red",
+                _ => "white"
             };
+            return $"[{color}]{name}[/]";
         }
 
         private string GetLogLevelName(LogLevel level)

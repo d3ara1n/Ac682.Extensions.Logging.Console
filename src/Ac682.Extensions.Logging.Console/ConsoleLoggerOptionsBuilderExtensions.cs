@@ -15,9 +15,11 @@ namespace Ac682.Extensions.Logging.Console
         {
             return builder
                 .AddFormatter<StringFormatter>()
-                .AddFormatter<MarkupFormatter>()
+                .AddFormatter<MessageFormatter>()
                 .AddFormatter<NumberFormatter>()
                 .AddFormatter<LogLevelFormatter>()
+                .AddFormatter<TimeSpanFormatter>()
+                .AddFormatter<SourceFormatter>()
                 .AddFormatter<DateTimeFormatter>()
                 .AddFormatter<ExceptionFormatter>()
                 .AddFormatter<ByteFormatter>()

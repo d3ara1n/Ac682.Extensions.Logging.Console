@@ -12,11 +12,10 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             return type == typeof(byte);
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
             format ??= "X2";
-            return new Markup($"0x{((IFormattable)obj).ToString(format, CultureInfo.CurrentCulture)}",
-                new Style(Color.Gold1));
+            return $"[orange1]0x{((IFormattable)obj).ToString(format, CultureInfo.CurrentCulture)}[/]";
         }
     }
 }

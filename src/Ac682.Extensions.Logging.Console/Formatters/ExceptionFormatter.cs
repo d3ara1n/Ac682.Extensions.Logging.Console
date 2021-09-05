@@ -8,18 +8,19 @@ namespace Ac682.Extensions.Logging.Console.Formatters
     {
         public bool IsTypeAvailable(Type type)
         {
-            return type == typeof(Exception);
+            return type.IsAssignableTo(typeof(Exception));
         }
 
-        public Markup Format(object obj, Type type, string format = null)
+        public string Format(object obj, Type type, string format = null)
         {
-            format ??= "FULL";
-            return
-                new Markup(format switch
-                {
-                    "MESSAGE" => ((Exception)obj).Message,
-                    "FULL" or _ => obj.ToString()
-                }, new Style(Color.Silver));
+            format ??= "full";
+            var ex = (Exception)obj;
+            var line = format.ToLower() switch
+            {
+                "message" => $"[red]{ex.Message}[/]",
+                "full" or _ => $"[red]{ex.Message}[/]\n[silver]{ex.StackTrace}[/]"
+            };
+            return line;
         }
     }
 }

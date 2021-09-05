@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Ac682.Extensions.Logging.Console
 {
@@ -16,7 +17,7 @@ namespace Ac682.Extensions.Logging.Console
         public ILogger CreateLogger(string categoryName)
         {
             return loggers.GetOrAdd(categoryName,
-                name => new ConsoleLogger(name, _options.Formatters, _options.MinimalLevel));
+                name => new ConsoleLogger(name, _options));
         }
 
         public void Dispose()
