@@ -8,21 +8,17 @@ namespace Ac682.Extensions.Logging.Console
 {
     public class ConsoleLoggerOptionsBuilder
     {
+        ConsoleLoggerOptions options = new ();
         List<Type> formatters = new();
-        LogLevel minimalLevel = LogLevel.Information;
-        
+
         public ConsoleLoggerOptions Build()
         {
             if (formatters.All(x => x != typeof(FallbackFormatter)))
             {
                 formatters.Add(typeof(FallbackFormatter));
             }
-            
-            var options = new ConsoleLoggerOptions()
-            {
-                Formatters = formatters,
-                MinimalLevel = minimalLevel
-            };
+
+            options.Formatters = formatters;
             return options;
         }
 
@@ -34,7 +30,13 @@ namespace Ac682.Extensions.Logging.Console
 
         public ConsoleLoggerOptionsBuilder SetMinimalLevel(LogLevel level)
         {
-            minimalLevel = level;
+            options.MinimalLevel = level;
+            return this;
+        }
+
+        public ConsoleLoggerOptionsBuilder SetTemplate(string template)
+        {
+            options.Template = template;
             return this;
         }
     }

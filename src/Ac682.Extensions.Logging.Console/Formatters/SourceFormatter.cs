@@ -17,7 +17,8 @@ namespace Ac682.Extensions.Logging.Console.Formatters
             var line = format.ToLower() switch
             {
                 "s" => name[(name.LastIndexOf('.') + 1) ..],
-                "l" => name
+                "l" => name,
+                _ => name
             };
             return $"[teal]{line}[/]";
         }
