@@ -55,5 +55,5 @@ var template = "{DateTime:HH:mm:ss} {Level:u4} {Source:s} {Exception|Message}\n"
 | DateTime | 标准的 `System.DateTime` 格式 | 事件日期 |
 | Level | "u"(默认, 大写), "l"(小写). 数字表示截取长度 | 日志等级 |
 | Source | "s"(仅类型名), "l"(默认, 类型全名) | Logger 的名字(在MSEL中通常为注入者类型全名) |
-| Exception | "full"(包含 StackTrace), "message"(仅 Message 属性) | 日志包含的异常对象 |
+| Exception | "full"(包含 StackTrace), "message"(默认, 仅 Message 属性) | 日志包含的异常对象 |
 | Message | 无 | 消息本身 |
