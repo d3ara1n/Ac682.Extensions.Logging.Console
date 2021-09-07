@@ -135,7 +135,7 @@ namespace Ac682.Extensions.Logging.Console
         private string BuildMessage(IEnumerable<KeyValuePair<string, object>> states)
         {
             const string KEY = "{OriginalFormat}";
-            var format = states.First(x => x.Key == KEY).Value.ToString();
+            var format = Markup.Escape(states.First(x => x.Key == KEY).Value.ToString());
             var args = states.Where(x => x.Key != KEY).Select(x => x.Value).ToList();
             // make message dictionary
             var elements = new Dictionary<string, object>();
