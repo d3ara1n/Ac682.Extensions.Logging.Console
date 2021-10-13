@@ -14,7 +14,7 @@ namespace Ac682.Extensions.Logging.Console.Formatters
 
         public string Format(object obj, Type type, string format = null)
         {
-            return $"[silver]{obj}[/]";
+            return $"[silver]{Markup.Escape(obj.ToString())}[/]";
         }
     }
 }
