@@ -17,7 +17,7 @@ namespace Ac682.Extensions.Logging.Console
 {
     public class ConsoleLogger : ILogger
     {
-        private static readonly object locker = new object();
+        private static readonly object locker = new();
         private readonly string _name;
         private readonly ConsoleLoggerOptions _options;
 
@@ -49,6 +49,8 @@ namespace Ac682.Extensions.Logging.Console
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception,
             Func<TState, Exception, string> formatter)
         {
+            if (!IsEnabled(logLevel)) return;
+            
             var datetime = DateTime.Now;
             //var properties = new List<(object,string)> {(datetime, null), (" ", null), (logLevel, "U4"), (" ", null)};
 
