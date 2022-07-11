@@ -3,15 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <IsPackable>false</IsPackable>
     </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
-    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Ac682.Extensions.Logging.Console\Ac682.Extensions.Logging.Console.csproj" />

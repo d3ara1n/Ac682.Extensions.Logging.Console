@@ -1,6 +1,6 @@
 namespace Ac682.Extensions.Logging.Console.Internal
 {
-    public class Source
+    internal class Source
     {
         public string FullName;
 

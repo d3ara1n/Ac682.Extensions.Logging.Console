@@ -50,7 +50,7 @@ namespace Ac682.Extensions.Logging.Console
             Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel)) return;
-            
+
             var datetime = DateTime.Now;
             //var properties = new List<(object,string)> {(datetime, null), (" ", null), (logLevel, "U4"), (" ", null)};
 
@@ -113,7 +113,7 @@ namespace Ac682.Extensions.Logging.Console
                         foreach (var skey in keys)
                         {
                             obj = properties.ContainsKey(skey) ? properties[skey] : null;
-                            if(obj != null) break;
+                            if (obj != null) break;
                         }
                     }
                     if (obj != null) builder.Append(formatter(obj, format.Length > 0 ? format : null));

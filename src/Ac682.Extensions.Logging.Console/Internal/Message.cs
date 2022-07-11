@@ -2,7 +2,7 @@ using Spectre.Console;
 
 namespace Ac682.Extensions.Logging.Console.Internal
 {
-    public class Message
+    internal class Message
     {
         public string Text;
 

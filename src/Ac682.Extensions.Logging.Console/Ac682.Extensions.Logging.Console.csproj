@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <Version>0.6.0</Version>
         <Authors>Chien Zhang</Authors>
         <RepositoryUrl>https://github.com/ac682/Ac682.Extensions.Logging.Console</RepositoryUrl>
         <Title>Ac682.Extensions.Logging.Console</Title>
@@ -12,10 +13,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      </PackageReference>
       <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
       <PackageReference Include="Spectre.Console" Version="0.43.0" />
     </ItemGroup>
